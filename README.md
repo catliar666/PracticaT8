@@ -1,4 +1,4 @@
-# Practica Tema 6
+# Practica Tema 8
 
 ![](https://github.com/catliar666/fotosReadmePracticas/blob/main/93163db5-6703-4651-bc55-9f167542918f.jpeg)
 
