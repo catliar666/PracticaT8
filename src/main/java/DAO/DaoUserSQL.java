@@ -63,8 +63,15 @@ public class DaoUserSQL implements DaoUser{
     }
 
     @Override
-    public boolean delete(User user, DAOManager dao) {
-        return false;
+    public boolean deleteAll(DAOManager dao) {
+        String sentencia;
+        sentencia = "DELETE FROM user";
+        try (Statement stmt = dao.getConn().createStatement()) {
+            stmt.executeUpdate(sentencia);
+            return true;
+        } catch (SQLException e) {
+            return false;
+        }
     }
 
     @Override

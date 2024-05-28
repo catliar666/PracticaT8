@@ -77,6 +77,17 @@ public class Driver implements Serializable {
         return shipments;
     }
 
+    public ArrayList<Integer> getDeliveryZones() {
+        return deliveryZones;
+    }
+
+    public void setDeliveryZones(ArrayList<Integer> deliveryZones) {
+        this.deliveryZones = deliveryZones;
+    }
+
+    public void setShipments(ArrayList<Shipment> shipments) {
+        this.shipments = shipments;
+    }
 
     //MÉTODOS
 
@@ -187,26 +198,5 @@ public class Driver implements Serializable {
                "█  Zonas de entrega asignadas: " + (getDeliveryZoneToString().isEmpty() ? "No hay zonas añadidas" : getDeliveryZoneToString()) + "\n" +
                "█  Paquetes asignados: " + getShipments().size() + "\n" +
                "──────────────────────────────────────────────────────────. ■ .──";
-    }
-
-
-    public void changeDeliveryStatus(String newStatus, int id) {
-        for (Shipment s :
-                shipments) {
-            if (s.getId() == id) s.setStatus(newStatus);
-        }
-        PersistenceDisk.saveDriver(this);
-    }
-
-    public void changeDeliveryData(String address, int postalCode, String city, int idShipment) {
-        for (Shipment s :
-                shipments) {
-            if (s.getId() == idShipment) {
-                s.setAlternativeAddress(address);
-                s.setAlternativePostalCode(postalCode);
-                s.setAlternativeCity(city);
-            }
-        }
-        PersistenceDisk.saveDriver(this);
     }
 }

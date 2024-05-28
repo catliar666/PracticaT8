@@ -7,6 +7,7 @@ import java.util.ArrayList;
 public interface DaoShipment {
 
     boolean insert(Shipment shipment, int idReciever, int idDriver, DAOManager dao);
+    boolean deleteAll(DAOManager dao);
     boolean updateIdDriver(Shipment s, int idDriver, DAOManager dao);
     boolean updateStatusShipment(Shipment shipment, DAOManager dao);
     boolean updateAddress(Shipment shipment, DAOManager dao);

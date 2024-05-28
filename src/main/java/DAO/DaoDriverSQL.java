@@ -10,6 +10,28 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 public class DaoDriverSQL implements DaoDriver {
+    public boolean deleteAll(DAOManager dao) {
+        String sentencia;
+        sentencia = "DELETE FROM driver";
+        try (Statement stmt = dao.getConn().createStatement()) {
+            deleteAllZone(dao);
+            stmt.executeUpdate(sentencia);
+            return true;
+        } catch (SQLException e) {
+            return false;
+        }
+    }
+    public boolean deleteAllZone(DAOManager dao) {
+        String sentencia;
+        sentencia = "DELETE FROM deliveryZones";
+        try (Statement stmt = dao.getConn().createStatement()) {
+            stmt.executeUpdate(sentencia);
+            return true;
+        } catch (SQLException e) {
+            return false;
+        }
+    }
+
     @Override
     public boolean insert(Driver driver, DAOManager dao) {
         String sentencia;

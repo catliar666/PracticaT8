@@ -40,6 +40,18 @@ public class DaoShipmentSQL implements DaoShipment{
     }
 
     @Override
+    public boolean deleteAll(DAOManager dao) {
+        String sentencia;
+        sentencia = "DELETE FROM shipment";
+        try (Statement stmt = dao.getConn().createStatement()) {
+            stmt.executeUpdate(sentencia);
+            return true;
+        } catch (SQLException e) {
+            return false;
+        }
+    }
+
+    @Override
     public boolean updateIdDriver(Shipment s, int idDriver, DAOManager dao) {
         String sentencia;
         sentencia = "UPDATE shipment SET " +

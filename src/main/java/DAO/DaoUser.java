@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public interface DaoUser {
     boolean insert(User user, DAOManager dao);
     boolean update(User user, DAOManager dao);
-    boolean delete (User user, DAOManager dao);
+    boolean deleteAll (DAOManager dao);
     User readById(int id, DAOManager dao);
     User readByEmail(String email, DAOManager dao);
     User readByEmailAndPass(String email, String pass, DAOManager dao);

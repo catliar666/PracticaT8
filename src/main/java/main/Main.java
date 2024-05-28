@@ -23,28 +23,9 @@ public class Main {
 
     public static void main(String[] args) {
         AppController appController = new AppController();
-        if (args.length == 0) programaPrincipal(appController);
-
-        if (args[0].equals("copy")) {
-            if (args.length == 2) {
-                copiaSeguridad(appController, args[1]);
-            }
-        }
-        if (args[0].equals("restore")) {
-            if (args.length == 2) {
-                appController = restoreCopySecurity(args[1]);
-                programaPrincipal(appController);
-            }
-        }
+        programaPrincipal(appController);
     }
 
-    private static AppController restoreCopySecurity(String arg) {
-        return PersistenceDisk.restore(arg);
-    }
-
-    private static void copiaSeguridad(AppController appController, String arg) {
-        PersistenceDisk.backup(appController, arg);
-    }
 
     public static void programaPrincipal(AppController appController) {
         Object user = null;
@@ -1112,7 +1093,8 @@ public class Main {
                                 █    8. Crear nueva cuenta de Administrador.                             █
                                 █    9. Muestra la configuración de nuestro programa.                    █
                                 █   10. Enviar listado de envíos por correo.                             █
-                                █   11. Cerrar sesión.                                                   █
+                                █   11. Realizar copia de seguridad de la base de datos.                 █
+                                █   12. Cerrar sesión.                                                   █
                                 └─────────────────────────────────────────────────────────────────. ■ .──┘
                                 Elija una opción: """, admin.getName(),
                         ((controller.getLastLogin(admin) == null) ? "No hay datos" : controller.getLastLogin(admin)), controller.numUsers(),
@@ -1161,6 +1143,9 @@ public class Main {
                         Utils.clickToContinue();
                         break;
                     case 11:
+                        backupsBaseData(controller);
+                        break;
+                    case 12:
                         closeLogin(controller, admin);
                         Utils.closeSesion();
                         break;
@@ -1178,6 +1163,74 @@ public class Main {
                         └─────────────────────────────. ■ .──┘""");
             }
         } while (op != 11);
+    }
+
+    private static void backupsBaseData(AppController controller) {
+        System.out.println("""
+                ┌──. ■ .─────────────────────────────────────────────────────────────────┐
+                                  Creación y restauración de datos
+                └─────────────────────────────────────────────────────────────────. ■ .──┘
+                """);
+        System.out.println("""
+                       █ 1. Guardar una copia de seguridad.
+                       █ 2. Restaurar una copia de seguridad.
+                       █ 3. Salir.
+                       Elige una opción:""");
+        int op = Integer.parseInt(S.nextLine());
+        switch (op) {
+            case 1:
+                saveBackup(controller);
+                break;
+            case 2:
+                restoreBackup(controller);
+                break;
+            case 3:
+                Utils.closeSesion();
+                break;
+            default:
+                System.out.println("Opción incorrecta");
+                break;
+        }
+    }
+
+    private static void restoreBackup(AppController controller) {
+        String ruta;
+        System.out.print("""
+                ┌──. ■ .────────────────────────────────────────────────────┐
+                  Para realizar la restauración de seguridad debe indicar
+                         la ruta donde están guardados los datos
+                   Ejemplo: \"\\Desktop\\backup\\FernanPaaq\"
+                └────────────────────────────────────────────────────. ■ .──┘
+                Introduce la ruta: """);
+        ruta = S.nextLine();
+        if (controller.restoreBackup(ruta)) System.out.println("""
+                ┌──. ■ .───────────────────────────────────────┐
+                   Copia de seguridad restaurada correctamente
+                └───────────────────────────────────────. ■ .──┘ """);
+        else System.out.println("""
+                ┌──. ■ .───────────────────────────────────────┐
+                   Error al restaurar la copia de seguridad
+                └───────────────────────────────────────. ■ .──┘ """);
+    }
+
+    private static void saveBackup(AppController controller) {
+        String ruta;
+        System.out.print("""
+                ┌──. ■ .────────────────────────────────────────────────────┐
+                  Para realizar la copia de seguridad debe indicar una ruta 
+                             donde quiera guardar los datos
+                   Ejemplo: \"\\Desktop\\backup\\FernanPaaq\"
+                └────────────────────────────────────────────────────. ■ .──┘
+                Introduce la ruta: """);
+        ruta = S.nextLine();
+        if (controller.saveBackup(ruta)) System.out.printf("""
+                ┌──. ■ .─────────────────────────────────────────────────────┐
+                  Copia de seguridad guardada en: %s\\
+                └─────────────────────────────────────────────────────. ■ .──┘\n""", ruta);
+        else System.out.println("""
+                ┌──. ■ .─────────────────────────────────┐
+                  Error al guardar la copia de seguridad
+                └─────────────────────────────────. ■ .──┘""");
     }
 
     private static void showConfigProgram(AppController controller) {

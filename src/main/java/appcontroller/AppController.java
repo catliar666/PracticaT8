@@ -13,6 +13,7 @@ import models.User;
 import persistence.PersistenceData;
 import persistence.PersistenceDisk;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -1055,5 +1056,118 @@ public class AppController implements Serializable {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public boolean saveBackup(String ruta) {
+        try {
+            DAO.open();
+            DaoUserSQL daoUserSQL = new DaoUserSQL();
+            DaoShipmentSQL daoShipmentSQL = new DaoShipmentSQL();
+            DaoDriverSQL daoDriverSQL = new DaoDriverSQL();
+            DaoAdminSQL daoAdminSQL = new DaoAdminSQL();
+            ArrayList<User> users = daoUserSQL.readAll(DAO);
+            ArrayList<Shipment> shipments = daoShipmentSQL.readAll(DAO);
+            ArrayList<Driver> drivers = daoDriverSQL.readAll(DAO);
+            ArrayList<Admin> admins = daoAdminSQL.readAll(DAO);
+            DAO.close();
+            return PersistenceDisk.guardaBackup(ruta, users, admins, drivers, shipments);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    public boolean restoreBackup(String ruta) {
+        deleteDataBase();
+        File pathData = new File(System.getProperty("user.home") + ruta);
+        if (!pathData.exists()) return false;
+        ArrayList<User> usersTemp = PersistenceDisk.restoreUsers(ruta);
+        ArrayList<Driver> driversTemp = PersistenceDisk.restoreDrivers(ruta);
+        ArrayList<Shipment> shipmentsTemp = PersistenceDisk.restoreShipments(ruta);
+        try {
+            DAO.open();
+            DaoShipmentSQL daoShipmentSQL = new DaoShipmentSQL();
+            if (!shipmentsTemp.isEmpty()) {
+                for (Shipment s:
+                     shipmentsTemp) {
+                    daoShipmentSQL.insert(s, -1, -1, DAO);
+                }
+            }
+            restoreUsers(usersTemp, shipmentsTemp);
+            restoreDrivers(driversTemp, shipmentsTemp);
+            DAO.close();
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+
+    }
+
+    private void restoreUsers(ArrayList<User> usersTemp, ArrayList<Shipment> shipments) {
+        try {
+            DAO.open();
+            DaoUserSQL daoUserSQL = new DaoUserSQL();
+            DaoShipmentSQL daoShipmentSQL = new DaoShipmentSQL();
+            if (!usersTemp.isEmpty()) {
+                for (User u :
+                        usersTemp) {
+                    daoUserSQL.insert(u, DAO);
+                    if (!shipments.isEmpty()) {
+                        for (Shipment s :
+                                shipments) {
+                            daoShipmentSQL.updateIdReciever(u.getId(), s.getId(), DAO);
+                        }
+                    }
+                }
+            }
+            DAO.close();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+    private void restoreDrivers(ArrayList<Driver> driversTemp, ArrayList<Shipment> shipments) {
+        try {
+            DAO.open();
+            DaoDriverSQL daoDriverSQL = new DaoDriverSQL();
+            DaoShipmentSQL daoShipmentSQL = new DaoShipmentSQL();
+            if (!driversTemp.isEmpty()) {
+                for (Driver d:
+                        driversTemp) {
+                    daoDriverSQL.insert(d, DAO);
+                    if (!shipments.isEmpty()) {
+                        for (Shipment s :
+                                shipments) {
+                            daoShipmentSQL.updateIdDriver(s, d.getId(), DAO);
+                        }
+                    }
+                    for (Integer i:
+                            d.getDeliveryZones()) {
+                        daoDriverSQL.insertZoneDelivery(d, i, DAO);
+                    }
+                }
+            }
+            DAO.close();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    private void deleteDataBase() {
+        try {
+            DAO.open();
+            DaoUserSQL daoUserSQL = new DaoUserSQL();
+            DaoShipmentSQL daoShipmentSQL = new DaoShipmentSQL();
+            DaoDriverSQL daoDriverSQL = new DaoDriverSQL();
+            daoUserSQL.deleteAll(DAO);
+            daoShipmentSQL.deleteAll(DAO);
+            daoDriverSQL.deleteAll(DAO);
+            DAO.close();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
     }
 }

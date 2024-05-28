@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 public class DaoAdminSQL implements DaoAdmin{
 
@@ -35,6 +36,18 @@ public class DaoAdminSQL implements DaoAdmin{
             return false;
         }
     }
+
+    @Override
+    public boolean deleteAll(DAOManager dao) {
+            String sentencia;
+            sentencia = "DELETE FROM admin";
+            try (Statement stmt = dao.getConn().createStatement()) {
+                stmt.executeUpdate(sentencia);
+                return true;
+            } catch (SQLException e) {
+                return false;
+            }
+        }
 
     @Override
     public Admin readById(int id, DAOManager dao) {
@@ -98,5 +111,25 @@ public class DaoAdminSQL implements DaoAdmin{
             return null;
         }
         return admin;
+    }
+
+    @Override
+    public ArrayList<Admin> readAll(DAOManager dao) {
+        ArrayList<Admin> admins = new ArrayList<>();
+        String sentencia;
+        sentencia = "SELECT * FROM admin";
+        try (PreparedStatement ps = dao.getConn().prepareStatement(sentencia)) {
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    admins.add(new Admin(rs.getInt("id"),
+                            rs.getString("name"),
+                            rs.getString("pass"),
+                            rs.getString("email")));
+                }
+            }
+        } catch (SQLException e) {
+            return null;
+        }
+        return admins;
     }
 }

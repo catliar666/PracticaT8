@@ -8,6 +8,7 @@ import java.util.ArrayList;
 public interface DaoDriver {
     boolean insert(Driver driver, DAOManager dao);
     boolean update(Driver driver, DAOManager dao);
+    boolean deleteAll(DAOManager dao);
     Driver readById(int id, DAOManager dao);
     ArrayList<Driver> readAll(DAOManager dao);
     Driver readByEmail(String email, DAOManager dao);
