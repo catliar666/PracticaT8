@@ -14,8 +14,8 @@ public class DaoDriverSQL implements DaoDriver {
         String sentencia;
         sentencia = "DELETE FROM driver";
         try (Statement stmt = dao.getConn().createStatement()) {
-            deleteAllZone(dao);
             stmt.executeUpdate(sentencia);
+            deleteAllZone(dao);
             return true;
         } catch (SQLException e) {
             return false;

@@ -1141,9 +1141,9 @@ public class AppController implements Serializable {
                     daoDriverSQL.insert(d, DAO);
                     for (Shipment w :
                             d.getShipments()) {
-                        if (daoShipmentSQL.readById(w.getId(), DAO) != null)
+                        if (daoShipmentSQL.readById(w.getId(), DAO) == null) {
                             daoShipmentSQL.insert(w, -1, d.getId(), DAO);
-                        else daoShipmentSQL.updateIdDriver(w, d.getId(), DAO);
+                        } else daoShipmentSQL.updateIdDriver(w, d.getId(), DAO);
                     }
                     for (Integer i :
                             d.getDeliveryZones()) {

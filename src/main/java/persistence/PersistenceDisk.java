@@ -98,12 +98,13 @@ public class PersistenceDisk {
         }
     }
 
-    public static boolean eliminarDatos(DAOManager dao) {
+    public static void eliminarDatos(DAOManager dao) {
         DaoUserSQL daoUserSQL = new DaoUserSQL();
         DaoDriverSQL daoDriverSQL = new DaoDriverSQL();
         DaoShipmentSQL daoShipmentSQL = new DaoShipmentSQL();
-        return (daoDriverSQL.deleteAll(dao) && daoShipmentSQL.deleteAll(dao)
-        && daoUserSQL.deleteAll(dao));
+        daoDriverSQL.deleteAll(dao);
+        daoUserSQL.deleteAll(dao);
+        daoShipmentSQL.deleteAll(dao);
     }
 
 
