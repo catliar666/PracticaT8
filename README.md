@@ -38,47 +38,6 @@ Hemos mejorado nuestros sistemas de comunicación para proporcionar actualizacio
 
 Además de las características básicas de envío y seguimiento, hemos agregado nuevas funcionalidades para mejorar aún más la experiencia del usuario, como la programación de entregas y la gestión de direcciones.
 
-## - Instalación
-Para poder ejecutar el programa debemos instalar el [jdk-21](https://download.oracle.com/java/21/latest/jdk-21_windows-x64_bin.exe "jdk-21") (haciendo click aquí se te descargará directamente en el ordenador), lo instalamos y  deberá asegurarse de que lo instala en la ruta “C:\Program Files\Java“, después entramos en windows y buscamos variables de entornos nos aparecerá esta ventana y seleccionamos variables de entornos.
-
-![](https://cdn.discordapp.com/attachments/1163537549126545470/1224173599217422446/image.png?ex=66378e42&is=66363cc2&hm=38dafda8015143da89bc5bcda481763ae947c44fe0f939cb29c235df04885a0f&)
-
-Se nos abrirá la siguiente ventana, seleccionamos “Path” y pulsamos sobre editar.
-
-![](https://media.discordapp.net/attachments/1163537549126545470/1224173805824376902/image.png?ex=66378e73&is=66363cf3&hm=27c135fffb628fb7c9cba2e9471e2e30b856b11c261f1b847220a0431c115c8f&=&format=webp&quality=lossless&width=596&height=661)
-
-Se abrirá la siguiente ventana haremos click en la variable de java e introducimos la siguiente la ruta C:\Program Files\Java\jdk-18.0.2.1\bin , confirmamos y aceptamos.
-
-![](https://cdn.discordapp.com/attachments/1163537549126545470/1224174093910151198/image.png?ex=66378eb8&is=66363d38&hm=7051446a388866fc6f480d769d8a9de81498f29167c07b8ec259cc1136cc307b&)
-
-Descargamos mediante el enlace a github el archivo “.zip”, creamos una carpeta en C: con el nombre que queramos e introducimos el archivo .zip que hemos descargado, lo descomprimimos y abrimos la carpeta que nos crea, entramos en src y pulsamos en el ejecutable y el programa comenzará a funcionar.
-
-## Iniciar el programa
-
-Para descargar el programa debemos seguir los siguientes pasos:
-
-###### 1.  Descargar zip
-
-![](https://media.discordapp.net/attachments/1163537549126545470/1236463061330690190/image.png?ex=66381976&is=6636c7f6&hm=fc8ab751781355b4c5169aa3a190ea64682a4386d09487ab9815107dc8e69329&=&format=webp&quality=lossless&width=1125&height=662)
-
-###### 2. Extraer todo
-
-![](https://media.discordapp.net/attachments/1163537549126545470/1236463662177325187/image.png?ex=66381a05&is=6636c885&hm=c8d74f80a3da4f8afced97cfb884f7b5b1fdd858daaa892be321edb93ffdc61b&=&format=webp&quality=lossless&width=371&height=175)
-
-###### 3. Ruta
-
-A continuación seguimos la ruta de carpetas hasta llegar al ejecutable PracticaT5-main\PracticaT5-main\PracticaT6.bat
-
-![](https://cdn.discordapp.com/attachments/1163537549126545470/1236463831375675552/image.png?ex=66381a2d&is=6636c8ad&hm=6aa275405ae7fab0327914cb91a910c6b5564531bc83aa07e68673ab66d1a7fe&)
-
-
-###### 4. Ejecutar el programa
-
-Si a la hora de ejecutar el programa se nos abre una ventana de emergencia indicandonos que impide el inicio de este por protección, simplemente le damos al botón "Ejecutar de todas formas" y ya tendremos listo nuestro programa
-
-![](https://cdn.discordapp.com/attachments/1163537549126545470/1224165121056706650/image.png?ex=6637865c&is=663634dc&hm=832e0e9bef4ceff13aa2813788eceb9813b1079e5c90f1d03104ceb37cafe7a7&)
-
-
 ## Funcionamiento
 
 ### Inicio
