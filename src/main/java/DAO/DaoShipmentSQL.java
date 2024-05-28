@@ -100,7 +100,7 @@ public class DaoShipmentSQL implements DaoShipment{
         sentencia = "SELECT * FROM shipment";
         try (PreparedStatement ps = dao.getConn().prepareStatement(sentencia)) {
             try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
+                while (rs.next()) {
                     LocalDate createDate = rs.getDate("createDate") != null ? rs.getDate("createDate").toLocalDate() : null;
                     LocalDate expectDate = rs.getDate("expectDate") != null ? rs.getDate("expectDate").toLocalDate() : null;
                     LocalDate deliveryDate = rs.getDate("deliveryDate") != null ? rs.getDate("deliveryDate").toLocalDate() : null;
@@ -130,7 +130,7 @@ public class DaoShipmentSQL implements DaoShipment{
         try (PreparedStatement ps = dao.getConn().prepareStatement(sentencia)) {
             ps.setInt(1, id);
             try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
+                while (rs.next()) {
                     LocalDate createDate = rs.getDate("createDate") != null ? rs.getDate("createDate").toLocalDate() : null;
                     LocalDate expectDate = rs.getDate("expectDate") != null ? rs.getDate("expectDate").toLocalDate() : null;
                     LocalDate deliveryDate = rs.getDate("deliveryDate") != null ? rs.getDate("deliveryDate").toLocalDate() : null;
@@ -157,7 +157,7 @@ public class DaoShipmentSQL implements DaoShipment{
         sentencia = "SELECT * FROM shipment WHERE status != 'Entregado'";
         try (PreparedStatement ps = dao.getConn().prepareStatement(sentencia)) {
             try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
+                while (rs.next()) {
                     LocalDate createDate = rs.getDate("createDate") != null ? rs.getDate("createDate").toLocalDate() : null;
                     LocalDate expectDate = rs.getDate("expectDate") != null ? rs.getDate("expectDate").toLocalDate() : null;
                     LocalDate deliveryDate = rs.getDate("deliveryDate") != null ? rs.getDate("deliveryDate").toLocalDate() : null;
@@ -213,7 +213,7 @@ public class DaoShipmentSQL implements DaoShipment{
         sentencia = "SELECT * FROM shipment WHERE idDriver IS NULL";
         try (PreparedStatement ps = dao.getConn().prepareStatement(sentencia)) {
             try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
+                while (rs.next()) {
                     LocalDate createDate = rs.getDate("createDate") != null ? rs.getDate("createDate").toLocalDate() : null;
                     LocalDate expectDate = rs.getDate("expectDate") != null ? rs.getDate("expectDate").toLocalDate() : null;
                     LocalDate deliveryDate = rs.getDate("deliveryDate") != null ? rs.getDate("deliveryDate").toLocalDate() : null;
@@ -241,7 +241,7 @@ public class DaoShipmentSQL implements DaoShipment{
         try (PreparedStatement ps = dao.getConn().prepareStatement(sentencia)) {
             ps.setInt(1, idUser);
             try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
+                while (rs.next()) {
                     LocalDate createDate = rs.getDate("createDate") != null ? rs.getDate("createDate").toLocalDate() : null;
                     LocalDate expectDate = rs.getDate("expectDate") != null ? rs.getDate("expectDate").toLocalDate() : null;
                     LocalDate deliveryDate = rs.getDate("deliveryDate") != null ? rs.getDate("deliveryDate").toLocalDate() : null;
@@ -270,7 +270,7 @@ public class DaoShipmentSQL implements DaoShipment{
         try (PreparedStatement ps = dao.getConn().prepareStatement(sentencia)) {
             ps.setInt(1, idUser);
             try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
+                while (rs.next()) {
                     LocalDate createDate = rs.getDate("createDate") != null ? rs.getDate("createDate").toLocalDate() : null;
                     LocalDate expectDate = rs.getDate("expectDate") != null ? rs.getDate("expectDate").toLocalDate() : null;
                     LocalDate deliveryDate = rs.getDate("deliveryDate") != null ? rs.getDate("deliveryDate").toLocalDate() : null;
@@ -327,7 +327,7 @@ public class DaoShipmentSQL implements DaoShipment{
         sentencia = "SELECT * FROM shipment WHERE status = 'Entregado'";
         try (PreparedStatement ps = dao.getConn().prepareStatement(sentencia)) {
             try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
+                while (rs.next()) {
                     LocalDate createDate = rs.getDate("createDate") != null ? rs.getDate("createDate").toLocalDate() : null;
                     LocalDate expectDate = rs.getDate("expectDate") != null ? rs.getDate("expectDate").toLocalDate() : null;
                     LocalDate deliveryDate = rs.getDate("deliveryDate") != null ? rs.getDate("deliveryDate").toLocalDate() : null;
@@ -356,7 +356,7 @@ public class DaoShipmentSQL implements DaoShipment{
         try (PreparedStatement ps = dao.getConn().prepareStatement(sentencia)) {
             ps.setInt(1, idDriver);
             try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
+                while (rs.next()) {
                     LocalDate createDate = rs.getDate("createDate") != null ? rs.getDate("createDate").toLocalDate() : null;
                     LocalDate expectDate = rs.getDate("expectDate") != null ? rs.getDate("expectDate").toLocalDate() : null;
                     LocalDate deliveryDate = rs.getDate("deliveryDate") != null ? rs.getDate("deliveryDate").toLocalDate() : null;
@@ -541,7 +541,7 @@ public class DaoShipmentSQL implements DaoShipment{
         try (PreparedStatement ps = dao.getConn().prepareStatement(sentencia)) {
             ps.setInt(1, id);
             try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
+                while (rs.next()) {
                     LocalDate createDate = rs.getDate("createDate") != null ? rs.getDate("createDate").toLocalDate() : null;
                     LocalDate expectDate = rs.getDate("expectDate") != null ? rs.getDate("expectDate").toLocalDate() : null;
                     LocalDate deliveryDate = rs.getDate("deliveryDate") != null ? rs.getDate("deliveryDate").toLocalDate() : null;

@@ -57,7 +57,7 @@ public class DaoAdminSQL implements DaoAdmin{
         try (PreparedStatement ps = dao.getConn().prepareStatement(sentencia)) {
             ps.setInt(1, id);
             try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
+                while (rs.next()) {
                     admin = new Admin(rs.getInt("id"),
                             rs.getString("name"),
                             rs.getString("pass"),
@@ -78,7 +78,7 @@ public class DaoAdminSQL implements DaoAdmin{
         try (PreparedStatement ps = dao.getConn().prepareStatement(sentencia)) {
             ps.setString(1, email);
             try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
+                while (rs.next()) {
                     admin = new Admin(rs.getInt("id"),
                             rs.getString("name"),
                             rs.getString("pass"),
@@ -100,7 +100,7 @@ public class DaoAdminSQL implements DaoAdmin{
             ps.setString(1, email);
             ps.setString(2, pass);
             try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
+                while (rs.next()) {
                     admin = new Admin(rs.getInt("id"),
                             rs.getString("name"),
                             rs.getString("pass"),
@@ -120,7 +120,7 @@ public class DaoAdminSQL implements DaoAdmin{
         sentencia = "SELECT * FROM admin";
         try (PreparedStatement ps = dao.getConn().prepareStatement(sentencia)) {
             try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
+                while (rs.next()) {
                     admins.add(new Admin(rs.getInt("id"),
                             rs.getString("name"),
                             rs.getString("pass"),

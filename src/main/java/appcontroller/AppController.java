@@ -27,13 +27,11 @@ public class AppController implements Serializable {
     private final DAOManager DAO;
 
 
-
     //CONSTRUCTOR
 
     public AppController() {
         DAO = DAOManager.getSinglentonInstance();
     }
-
 
 
     //METODOS
@@ -665,7 +663,7 @@ public class AppController implements Serializable {
                 insert = daoDriverSQL.insertZoneDelivery(driverFind, newPostalCode, DAO);
                 DAO.close();
             } catch (Exception e) {
-               return false;
+                return false;
             }
 
         }
@@ -687,8 +685,8 @@ public class AppController implements Serializable {
 
 
     /*Obtiene el número de envios que ha creado un usuario, si el id del usuario está registrado en los envios
-    * devuelve la informacion completa del envio en un arraylist, si ocurre algún problema devuelve -1 indicando
-    * que ha ocurrido una excepcion*/
+     * devuelve la informacion completa del envio en un arraylist, si ocurre algún problema devuelve -1 indicando
+     * que ha ocurrido una excepcion*/
     public int getNumShipmentsMadeByUser(int idUser) {
         ArrayList<Shipment> shipmentsCreate;
         try {
@@ -713,7 +711,7 @@ public class AppController implements Serializable {
             DaoShipmentSQL daoShipmentSQL = new DaoShipmentSQL();
             shipmentsFind = daoShipmentSQL.readShipmentByEmailUser(u.getEmail(), DAO);
             if (!shipmentsFind.isEmpty()) {
-                for (Shipment s:
+                for (Shipment s :
                         shipmentsFind) {
                     if (s != null) daoShipmentSQL.updateIdReciever(u.getId(), s.getId(), DAO);
                 }
@@ -990,9 +988,9 @@ public class AppController implements Serializable {
         DaoAdminSQL daoAdminSQL = new DaoAdminSQL();
         try {
             DAO.open();
-            if (user instanceof User ) return daoUserSQL.update((User) user, DAO);
-            if (user instanceof Driver ) return daoDriverSQL.update((Driver) user, DAO);
-            if (user instanceof Admin ) return daoAdminSQL.update((Admin) user, DAO);
+            if (user instanceof User) return daoUserSQL.update((User) user, DAO);
+            if (user instanceof Driver) return daoDriverSQL.update((Driver) user, DAO);
+            if (user instanceof Admin) return daoAdminSQL.update((Admin) user, DAO);
             DAO.close();
         } catch (Exception e) {
             return false;
@@ -1087,14 +1085,20 @@ public class AppController implements Serializable {
         try {
             DAO.open();
             DaoShipmentSQL daoShipmentSQL = new DaoShipmentSQL();
-            if (!shipmentsTemp.isEmpty()) {
-                for (Shipment s:
-                     shipmentsTemp) {
+            restoreUsers(usersTemp);
+            restoreDrivers(driversTemp, shipmentsTemp);
+            ArrayList<Shipment> newShipments = new ArrayList<>();
+            for (Shipment s : shipmentsTemp) {
+                if (daoShipmentSQL.readById(s.getId(), DAO) == null) {
+                    newShipments.add(s);
+                }
+            }
+            if (!newShipments.isEmpty()) {
+                for (Shipment s :
+                        newShipments) {
                     daoShipmentSQL.insert(s, -1, -1, DAO);
                 }
             }
-            restoreUsers(usersTemp, shipmentsTemp);
-            restoreDrivers(driversTemp, shipmentsTemp);
             DAO.close();
             return true;
         } catch (Exception e) {
@@ -1103,7 +1107,7 @@ public class AppController implements Serializable {
 
     }
 
-    private void restoreUsers(ArrayList<User> usersTemp, ArrayList<Shipment> shipments) {
+    private void restoreUsers(ArrayList<User> usersTemp) {
         try {
             DAO.open();
             DaoUserSQL daoUserSQL = new DaoUserSQL();
@@ -1112,15 +1116,14 @@ public class AppController implements Serializable {
                 for (User u :
                         usersTemp) {
                     daoUserSQL.insert(u, DAO);
-                    if (!shipments.isEmpty()) {
-                        for (Shipment s :
-                                shipments) {
-                            daoShipmentSQL.updateIdReciever(u.getId(), s.getId(), DAO);
+                    for (Shipment s :
+                            u.getShipments()) {
+                        if (s.getEmailUserNoRegister().equals(u.getEmail())) {
+                            daoShipmentSQL.insert(s, u.getId(), -1, DAO);
                         }
                     }
                 }
             }
-            DAO.close();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -1133,37 +1136,30 @@ public class AppController implements Serializable {
             DaoDriverSQL daoDriverSQL = new DaoDriverSQL();
             DaoShipmentSQL daoShipmentSQL = new DaoShipmentSQL();
             if (!driversTemp.isEmpty()) {
-                for (Driver d:
+                for (Driver d :
                         driversTemp) {
                     daoDriverSQL.insert(d, DAO);
-                    if (!shipments.isEmpty()) {
-                        for (Shipment s :
-                                shipments) {
-                            daoShipmentSQL.updateIdDriver(s, d.getId(), DAO);
-                        }
+                    for (Shipment w :
+                            d.getShipments()) {
+                        if (daoShipmentSQL.readById(w.getId(), DAO) != null)
+                            daoShipmentSQL.insert(w, -1, d.getId(), DAO);
+                        else daoShipmentSQL.updateIdDriver(w, d.getId(), DAO);
                     }
-                    for (Integer i:
+                    for (Integer i :
                             d.getDeliveryZones()) {
-                        daoDriverSQL.insertZoneDelivery(d, i, DAO);
+                        if (i != null) daoDriverSQL.insertZoneDelivery(d, i, DAO);
                     }
                 }
             }
-            DAO.close();
-        } catch (Exception e) {
+        } catch(Exception e){
             throw new RuntimeException(e);
         }
-
     }
 
     private void deleteDataBase() {
         try {
             DAO.open();
-            DaoUserSQL daoUserSQL = new DaoUserSQL();
-            DaoShipmentSQL daoShipmentSQL = new DaoShipmentSQL();
-            DaoDriverSQL daoDriverSQL = new DaoDriverSQL();
-            daoUserSQL.deleteAll(DAO);
-            daoShipmentSQL.deleteAll(DAO);
-            daoDriverSQL.deleteAll(DAO);
+            PersistenceDisk.eliminarDatos(DAO);
             DAO.close();
         } catch (Exception e) {
             throw new RuntimeException(e);

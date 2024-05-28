@@ -40,4 +40,5 @@ public interface DaoShipment {
 
 
     ArrayList<Shipment> readShipmentDeliveredByUser(int id, DAOManager dao);
+
 }
